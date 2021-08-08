@@ -7,27 +7,33 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { useForms } from "../../hooks/useForms";
+
 import { styleAuth } from "../../Styles/auth";
+import { registerUser } from "../../actions/auth";
 
 export const Register = () => {
-
   const [formValues, handleOnchange] = useForms({
-    name:'',
-    lastname:'',
-    username:'',
-    email:'',
-    pass:'',
-    passconfirm:''
-  })
+    name: "Rafael",
+    lastname: "ID",
+    username: "",
+    email: "",
+    pass: "Pass@123",
+    passconfirm: "Pass@123",
+  });
 
-  const { name, lastname, username, email, pass, passconfirm} = formValues;
+  const { name, lastname, username, email, pass, passconfirm } = formValues;
 
-  const registerUser = (e) => {
+  const register = (e) => {
     e.preventDefault();
 
-    console.log(formValues);
-  }
-  
+    registerUser(name, lastname, username, email, pass).then((response) => {
+      console.log(response);
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
+      }
+    });
+  };
+
   return (
     <Container component="main" maxWidth="md" justify="center">
       <div style={styleAuth.paper}>
@@ -109,7 +115,7 @@ export const Register = () => {
                 color="primary"
                 size="large"
                 style={styleAuth.submit}
-                onClick={registerUser}
+                onClick={register}
               >
                 Register
               </Button>

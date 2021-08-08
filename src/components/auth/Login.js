@@ -3,8 +3,26 @@ import { Avatar, Button, Container, TextField, Typography } from "@material-ui/c
 import LockIcon from "@material-ui/icons/Lock";
 
 import { styleAuth } from "../../Styles/auth";
+import { useForms } from "../../hooks/useForms";
+import { loginUser } from "../../actions/auth";
 
 export const Login = () => {
+
+  const[ values, handleOnChange] = useForms({
+    email: '',
+    password: ''
+  })
+
+  const {email, password } = values;
+
+  const userLogin = (e) => {
+    e.preventDefault();
+    loginUser(values).then(response => {
+      console.log('user login', response);
+      localStorage.setItem('token', response.data.token)
+    });
+  }
+  
   return (
     <Container maxWidth="xs">
       <div style={styleAuth.paper}>
@@ -14,9 +32,9 @@ export const Login = () => {
         <Typography component="h1" variant="h5">
           User Login
         </Typography>
-        <form>
-            <TextField variant="outlined" fullWidth label="Input email" margin="normal"/>
-            <TextField variant="outlined" fullWidth type="password" label="Input password" margin="normal"/>
+        <form onSubmit={userLogin}>
+            <TextField name='email' value={email} onChange={handleOnChange} variant="outlined" fullWidth type="email" label="Input email" margin="normal"/>
+            <TextField name='password' value={password} onChange={handleOnChange} variant="outlined" fullWidth type="password" label="Input password" margin="normal"/>
 
             <Button type="submit" fullWidth variant="contained" color="primary" style={styleAuth.submit}>
                 Login
