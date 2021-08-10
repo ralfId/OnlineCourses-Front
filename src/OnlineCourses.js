@@ -1,4 +1,6 @@
 import React from "react";
+import { Provider } from "react-redux";
+import { store } from "./context/store/store";
 // import { Register } from "./components/auth/Register";
 // import { Login } from "./components/auth/Login";
 import { AppRouter } from "./routers/AppRouter";
@@ -6,6 +8,9 @@ import { AppRouter } from "./routers/AppRouter";
 
 export const OnlineCourses = () => {
   return (
-    <AppRouter/>
+    <Provider store={store}>
+
+      <AppRouter/>
+    </Provider>
   );
 };
