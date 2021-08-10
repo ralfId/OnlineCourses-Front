@@ -5,22 +5,23 @@ import LockIcon from "@material-ui/icons/Lock";
 import { styleAuth } from "../../Styles/auth";
 import { useForms } from "../../hooks/useForms";
 import { loginUser } from "../../actions/auth";
+import { useDispatch } from "react-redux";
 
 export const Login = () => {
 
-  const[ values, handleOnChange] = useForms({
+  const dispatch = useDispatch();
+
+  const[ formValues, handleOnChange] = useForms({
     email: '',
     password: ''
   })
 
-  const {email, password } = values;
+  const {email, password } = formValues;
 
   const userLogin = (e) => {
     e.preventDefault();
-    loginUser(values).then(response => {
-      console.log('user login', response);
-      localStorage.setItem('token', response.data.token)
-    });
+  
+    dispatch(loginUser(formValues));
   }
   
   return (

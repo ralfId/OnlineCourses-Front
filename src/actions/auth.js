@@ -1,4 +1,5 @@
 import { HttpClient } from "../services/httpClient";
+import { types } from "../types/types";
 
 export const registerUser = (name, lastname, username, email, password) => {
   return new Promise((resolve, eject) => {
@@ -38,9 +39,14 @@ export const updateUser = (name, lastname, username, email, password) => {
 
 
 export const loginUser = (user) => {
-  return new Promise((resolve, reject)=>{
+  return(dispatch)=>{
     HttpClient.post('/Users/login', user).then(response => {
-      resolve(response);
+      dispatch(login(response.data))
     })
-  });
+  }
 };
+
+const login = (user)=>({
+  type: types.login,
+  payload: user
+})
