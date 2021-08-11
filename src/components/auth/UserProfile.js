@@ -6,11 +6,13 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { getCurrentUser, updateUser } from "../../actions/auth";
 import { useForms } from "../../hooks/useForms";
 import { styleAuth } from "../../Styles/auth";
 
 export const UserProfile = () => {
+  const dispatch = useDispatch();
 
   const [formValues, HandleOnchange, setFormValues] = useForms({
     name: "",
@@ -21,28 +23,22 @@ export const UserProfile = () => {
     passwordConfirm: "",
   });
 
-
-
-  const {name, lastName, userName, email, password, passwordConfirm} = formValues;
+  const { name, lastName, userName, email, password, passwordConfirm } =
+    formValues;
 
   useEffect(() => {
-    getCurrentUser().then( response =>
-      {
-         setFormValues(response.data);
-      });
-  }, [])
+    getCurrentUser().then((response) => {
+      setFormValues(response.data);
+    });
+  }, []);
 
   const saveChanges = (e) => {
-    e.preventDefault()
-   
+    e.preventDefault();
 
-    // console.log(formValues)
-    updateUser(name, lastName, userName, email, password).then(response => {
-      window.localStorage.setItem('token', response.data.token)
-    })
+    dispatch(updateUser(name, lastName, userName, email, password))
+     
+  };
 
-  }
-  
   return (
     <Container component="main" maxWidth="md" justify="center">
       <div style={styleAuth.paper}>
@@ -96,7 +92,7 @@ export const UserProfile = () => {
           <Grid item xs={12} md={6}>
             <TextField
               name="password"
-              value={password || ''}
+              value={password || ""}
               onChange={HandleOnchange}
               variant="outlined"
               fullWidth
@@ -107,7 +103,7 @@ export const UserProfile = () => {
           <Grid item xs={12} md={6}>
             <TextField
               name="passwordConfirm"
-              value={passwordConfirm || ''}
+              value={passwordConfirm || ""}
               onChange={HandleOnchange}
               variant="outlined"
               fullWidth

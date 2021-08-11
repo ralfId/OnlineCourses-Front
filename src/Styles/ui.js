@@ -15,5 +15,16 @@ export const useStyles = makeStyles((theme) => ({
   avatarSize:{
       width: 40,
       height:40
+  },
+
+  /* For drawer menus */
+  list:{
+    width: 250
+  },
+  listItemText:{
+    fontSize: "14px",
+    fontWeight: 600,
+    paddingLeft: "15px",
+    color: "#212121"
   }
 }));

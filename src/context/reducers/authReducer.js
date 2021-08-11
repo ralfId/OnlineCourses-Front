@@ -16,6 +16,12 @@ export const authReducer = (state = initState, action) => {
         return{
             isAuthenticated: false
         }
+    case types.update:
+      return{
+        ...state,
+        ...action.payload,
+        isAuthenticated: true
+      }
     default:
       return state
   }
