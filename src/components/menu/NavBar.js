@@ -1,45 +1,34 @@
+import React from "react";
 import {
   Button,
   IconButton,
   Toolbar,
   Typography,
   Avatar,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText
 } from "@material-ui/core";
-import React, { useState } from "react";
 import { useStyles } from "../../Styles/ui";
+import { HamburgerMenu } from "../menu/HamburgerMenu";
+import { useDispatch } from "react-redux";
+import { openDropdownMenu, openHamburgerMenu } from "../../actions/menu";
+import { DropdownMenu } from "./DropdownMenu";
 
 export const NavBar = () => {
-  const { secctionDesktop, secctionMobile, grow, avatarSize, list, listItemText } = useStyles();
- const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(false)
-  
- const handleCloseMenu = () => {
-   setIsLeftMenuOpen(false);
- };
- 
- const openLeftMenu = () => {
-   setIsLeftMenuOpen(true)
- }
- 
- return (
-    <>
-    <Drawer open={isLeftMenuOpen}
-    onClose={handleCloseMenu} anchor="left" >
-      <div classsName={list} onClick={handleCloseMenu}>
-        <List>
-          <ListItem button>
-            <i className="material-icons">account_box</i>
-            <ListItemText className={{primary: listItemText}} primary="User Profile"/>
-          </ListItem>
-        </List>
-      </div>
+  const dispatch = useDispatch();
+  const { secctionDesktop, secctionMobile, grow, avatarSize } = useStyles();
 
-    </Drawer>
+  const handleOpenMenu = () => {
+    dispatch(openHamburgerMenu());
+  };
+
+  const handleDropdownMenuOpen =()=>{
+    dispatch(openDropdownMenu())
+  }
+  return (
+    <>
+      <HamburgerMenu />
+      <DropdownMenu />
       <Toolbar>
-        <IconButton color="inherit" onClick={openLeftMenu}>
+        <IconButton color="inherit" onClick={handleOpenMenu}>
           <span className="material-icons">menu</span>
         </IconButton>
 
@@ -56,7 +45,7 @@ export const NavBar = () => {
           ></Avatar>
         </div>
 
-        <div className={secctionMobile}>
+        <div className={secctionMobile} onClick={handleDropdownMenuOpen}>
           <IconButton color="inherit">
             <span className="material-icons">more_vert</span>
           </IconButton>
