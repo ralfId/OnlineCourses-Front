@@ -1,6 +1,6 @@
 import { types } from "../types/types";
 
-export const openSnackBar = (message, severity) => {
+export const openSnackBar = (message, severity ='') => {
   /*
   severity: success | error | info | warning
  */

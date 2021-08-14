@@ -39,7 +39,7 @@ export const getCurrentUser = () => {
   });
 };
 
-export const updateUser = (name, lastname, username, email, password) => {
+export const updateUser = (name, lastname, username, email, password, UserImage) => {
   return (dispatch) => {
     HttpClient.put("/Users/update", {
       name,
@@ -47,9 +47,9 @@ export const updateUser = (name, lastname, username, email, password) => {
       username,
       email,
       password,
+      UserImage,
     })
       .then((response) => {
-        console.log('response = 200',response.status);
 
         if (response.status === 200) {
           window.localStorage.setItem("token", response.data.token);
