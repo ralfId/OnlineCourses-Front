@@ -1,14 +1,43 @@
 import { HttpClient } from "../services/httpClient";
+import { httpClientNoToken } from "../services/httpClienWithOutToken";
 import { types } from "../types/types";
 import { openSnackBar } from "./ui";
 
 export const loginUser = (user) => {
   return (dispatch) => {
-    HttpClient.post("/Users/login", user)
+    httpClientNoToken
+      .postNOToken("/Users/login", user)
       .then((response) => {
-        dispatch(login(response.data));
+        if (response.status === 200) {
+          localStorage.setItem("token", response.data.token);
+          if (response.data.profileImage) {
+            let photo = response.data.profileImage;
+            const newPhoto =
+              "data:image/" + photo.extention + ";base64," + photo.data;
+            response.data.image = newPhoto;
+            response.data.profileImage = null;
+
+          }
+          dispatch(login(response.data));
+        }
       })
-      .catch((error) => console.log(error.response.data));
+      .catch((error) => {
+        //catch one error
+        if (error.response.data.message !== null) {
+          dispatch(
+            openSnackBar("Login error: " + error.response.data.message, "error")
+          );
+        }
+        //catch many error
+        let errors = error.response.data.errors;
+        if (errors !== null) {
+          for (let categ in errors) {
+            for (let err in errors[categ]) {
+              dispatch(openSnackBar(errors[categ][err], "error"));
+            }
+          }
+        }
+      });
   };
 };
 
@@ -18,17 +47,39 @@ const login = (user) => ({
 });
 
 export const registerUser = (name, lastname, username, email, password) => {
-  return new Promise((resolve, eject) => {
-    HttpClient.post("/Users/register", {
-      name,
-      lastname,
-      username,
-      email,
-      password,
-    }).then((response) => {
-      resolve(response);
-    });
-  });
+  return (dispatch) => {
+    httpClientNoToken
+      .postNOToken("/Users/register", {
+        name,
+        lastname,
+        username,
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log("iiiiiiiiiiiiiiiiiiiiiiiii");
+        if (response.status === 200) {
+          dispatch(login(response.data));
+        }
+      })
+      .catch((error) => {
+        //catch one error
+        if (error.response.data.message !== null) {
+          dispatch(
+            openSnackBar("Login error: " + error.response.data.message, "error")
+          );
+        }
+        //catch many error
+        let errors = error.response.data.errors;
+        if (errors !== null) {
+          for (let categ in errors) {
+            for (let err in errors[categ]) {
+              dispatch(openSnackBar(errors[categ][err], "error"));
+            }
+          }
+        }
+      });
+  };
 };
 
 export const getCurrentUser = () => {
@@ -39,7 +90,8 @@ export const getCurrentUser = () => {
           let photo = response.data.profileImage;
           const newPhoto =
             "data:image/" + photo.extention + ";base64," + photo.data;
-          response.data.profileImage = newPhoto;
+          response.data.image = newPhoto;
+          response.data.profileImage = null;
         }
       }
       resolve(response);
@@ -85,7 +137,8 @@ export const updateUser = (
             let photo = response.data.profileImage;
             const newPhoto =
               "data:image/" + photo.extention + ";base64," + photo.data;
-            response.data.profileImage = newPhoto;
+            response.data.image = newPhoto;
+            response.data.profileImage = null;
           }
           window.localStorage.setItem("token", response.data.token);
           dispatch(update(response.data));

@@ -10,8 +10,11 @@ import { useForms } from "../../hooks/useForms";
 
 import { styleAuth } from "../../Styles/auth";
 import { registerUser } from "../../actions/auth";
+import { useDispatch } from "react-redux";
 
 export const Register = () => {
+  const dispatch = useDispatch();
+
   const [formValues, handleOnchange] = useForms({
     name: "Rafael",
     lastname: "ID",
@@ -26,12 +29,7 @@ export const Register = () => {
   const register = (e) => {
     e.preventDefault();
 
-    registerUser(name, lastname, username, email, pass).then((response) => {
-      console.log(response);
-      if (response.status === 200) {
-        localStorage.setItem("token", response.data.token);
-      }
-    });
+    dispatch(registerUser(name, lastname, username, email, pass));
   };
 
   return (

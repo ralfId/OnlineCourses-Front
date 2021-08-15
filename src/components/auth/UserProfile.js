@@ -7,23 +7,20 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import ImageUploader from "react-images-upload";
 
-import { getCurrentUser, updateUser } from "../../actions/auth";
+import {  updateUser } from "../../actions/auth";
 import { styleAuth } from "../../Styles/auth";
 import { getimageData } from "../../helpers/getImageData";
 import { openSnackBar } from "../../actions/ui";
-import defaultUserPhoto from '../../img/user.png'
+import defaultUserPhoto from "../../img/user.png";
 
 export const UserProfile = () => {
   const dispatch = useDispatch();
 
-  /**
-   * TODO
-   * change forms values using user info from state
-   */
+  const auth = useSelector((state) => state.auth);
   const [formValues, setFormValues] = useState({
     name: "",
     lastName: "",
@@ -32,8 +29,9 @@ export const UserProfile = () => {
     password: "",
     passwordConfirm: "",
     profileImage: null,
-    image: "",
+    image: null,
   });
+  const { isAuthenticated } = auth;
 
   const {
     name,
@@ -43,20 +41,23 @@ export const UserProfile = () => {
     password,
     passwordConfirm,
     profileImage,
-    imageUrl
+    image,
   } = formValues;
 
   useEffect(() => {
-    getCurrentUser().then((response) => {
-      setFormValues(response.data);
-      setFormValues((values)=>({...values, imageUrl: response.data.profileImage, profileImage: null}))
-    });
-  }, []);
+    // getCurrentUser().then((response) => {
+    // });
+    if (isAuthenticated) {
+      setFormValues(auth);
+    }
+  }, [isAuthenticated, auth]);
 
   const saveChanges = (e) => {
     e.preventDefault();
 
-    dispatch(updateUser(name, lastName, userName, email, password, profileImage, profileImage));
+    dispatch(
+      updateUser(name, lastName, userName, email, password, profileImage)
+    );
   };
 
   const HandleOnchange = ({ target }) => {
@@ -72,17 +73,21 @@ export const UserProfile = () => {
     const uriImg = URL.createObjectURL(imagenes[0]);
     getimageData(imagenes[0])
       .then((response) => {
-        setFormValues({ ...formValues, imageUrl: uriImg, profileImage: response });
+        setFormValues({
+          ...formValues,
+          image: uriImg,
+          profileImage: response,
+        });
       })
       .catch((error) => {
-        dispatch(openSnackBar(error, "error"));
+        dispatch(openSnackBar("Can not load image", "error"));
       });
   };
 
   return (
     <Container component="main" maxWidth="md" justify="center">
       <div style={styleAuth.paper}>
-        <Avatar style={styleAuth.avatar} src={imageUrl || defaultUserPhoto} />
+        <Avatar style={styleAuth.avatar} src={image || defaultUserPhoto} />
         <Typography component="h1" variant="h5">
           User profile
         </Typography>

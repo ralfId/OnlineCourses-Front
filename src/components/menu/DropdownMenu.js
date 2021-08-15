@@ -7,12 +7,16 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 import { closeDropdownMenu } from "../../actions/menu";
 import { useStyles } from "../../Styles/ui";
-import { Link } from "react-router-dom";
+import defaultUserPhoto from "../../img/user.png";
+
 
 export const DropdownMenu = () => {
   const dispatch = useDispatch();
+  const {image, userName} = useSelector(state => state.auth)
   const { isDropdownMenuOpen } = useSelector((state) => state.menu);
   const { list, listItemText } = useStyles();
 
@@ -31,10 +35,10 @@ export const DropdownMenu = () => {
       <div className={list}>
         <List>
           <ListItem button component={Link} to="/">
-            <Avatar src="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083383_960_720.jpg" />
+            <Avatar src={image || defaultUserPhoto} />
             <ListItemText
               classes={{ primary: listItemText }}
-              primary="Nombre del Usuario"
+              primary={userName}
             />
           </ListItem>
 

@@ -6,14 +6,15 @@ import { styleAuth } from "../../Styles/auth";
 import { useForms } from "../../hooks/useForms";
 import { loginUser } from "../../actions/auth";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
 
   const dispatch = useDispatch();
 
   const[ formValues, handleOnChange] = useForms({
-    email: '',
-    password: ''
+    email: 'ralf_raid@yopmail.com',
+    password: 'Password@123'
   })
 
   const {email, password } = formValues;
@@ -41,6 +42,9 @@ export const Login = () => {
                 Login
             </Button>
         </form>
+        <Link to='/auth/register'>
+          Create new account
+        </Link>
       </div>
     </Container>
   );
