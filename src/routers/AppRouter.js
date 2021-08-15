@@ -1,31 +1,36 @@
-import { Grid, ThemeProvider } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core";
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Login } from "../components/auth/Login";
-import { Register } from "../components/auth/Register";
-import { UserProfile } from "../components/auth/UserProfile";
-import { AppNavbar } from "../components/menu/AppNavbar";
+import { useSelector } from "react-redux";
+import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
 import { SnackBarApp } from "../components/ui/SnackBar";
 import { theme } from "../theme/theme";
+import { AuthRouter } from "./AuthRouter";
+import { PrivateRoute } from "./PrivateRoute";
+import { PublicRoute } from "./PublicRoute";
+import { UnAuthRouter } from "./UnAuthRouter";
 
 export const AppRouter = () => {
+  const { isAuthenticated } = useSelector((state) => state.auth);
   return (
-    <>
-    <SnackBarApp/>
-      <Router>
-        <ThemeProvider theme={theme}>
-          <AppNavbar />
-          <Grid>
-            <Switch>
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/profile" component={UserProfile} />
-
-              <Route exact path="/" component={Login} />
-            </Switch>
-          </Grid>
-        </ThemeProvider>
-      </Router>
-    </>
+    <Router>
+      <ThemeProvider theme={theme}>
+        <div>
+          <SnackBarApp />
+          <Switch>
+            <PublicRoute
+              path="/auth"
+              isAuthenticated={isAuthenticated}
+              component={UnAuthRouter}
+            />
+            <PrivateRoute
+              path="/"
+              isAuthenticated={isAuthenticated}
+              component={AuthRouter}
+            />
+            <Redirect to="/auth/login" />
+          </Switch>
+        </div>
+      </ThemeProvider>
+    </Router>
   );
 };
