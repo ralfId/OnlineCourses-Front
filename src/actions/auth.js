@@ -34,12 +34,42 @@ export const registerUser = (name, lastname, username, email, password) => {
 export const getCurrentUser = () => {
   return new Promise((resolve, reject) => {
     HttpClient.get("/Users").then((response) => {
+      if (response.status === 200) {
+        if (response.data.profileImage) {
+          let photo = response.data.profileImage;
+          const newPhoto =
+            "data:image/" + photo.extention + ";base64," + photo.data;
+          response.data.profileImage = newPhoto;
+        }
+      }
       resolve(response);
     });
   });
+
+  // return (dispatch) => {
+  //   HttpClient.get("/Users").then((response) => {
+  //     if (response.status === 200) {
+  //       if (response.data.ProfileImage) {
+  //         let photo = response.data.ProfileImage;
+  //         const newPhoto =
+  //           "data:image/" + photo.extention + ";base64," + photo.data;
+  //         response.data.ProfileImage = newPhoto;
+  //         dispatch(login(response.data));
+  //         console.log(response.data)
+  //       }
+  //     }
+  //   });
+  // };
 };
 
-export const updateUser = (name, lastname, username, email, password, UserImage) => {
+export const updateUser = (
+  name,
+  lastname,
+  username,
+  email,
+  password,
+  UserImage
+) => {
   return (dispatch) => {
     HttpClient.put("/Users/update", {
       name,
@@ -50,8 +80,13 @@ export const updateUser = (name, lastname, username, email, password, UserImage)
       UserImage,
     })
       .then((response) => {
-
         if (response.status === 200) {
+          if (response.data.profileImage) {
+            let photo = response.data.profileImage;
+            const newPhoto =
+              "data:image/" + photo.extention + ";base64," + photo.data;
+            response.data.profileImage = newPhoto;
+          }
           window.localStorage.setItem("token", response.data.token);
           dispatch(update(response.data));
           dispatch(openSnackBar("Changes were saved successfully", "success"));
@@ -61,7 +96,9 @@ export const updateUser = (name, lastname, username, email, password, UserImage)
         // console.log(error.response.data.errors)
         dispatch(
           openSnackBar(
-            "Could not save changes:  " + JSON.stringify(error.response.data.errors), "error"
+            "Could not save changes:  " +
+              JSON.stringify(error.response.data.errors),
+            "error"
           )
         );
       });

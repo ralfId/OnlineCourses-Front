@@ -15,23 +15,24 @@ import { getCurrentUser, updateUser } from "../../actions/auth";
 import { styleAuth } from "../../Styles/auth";
 import { getimageData } from "../../helpers/getImageData";
 import { openSnackBar } from "../../actions/ui";
+import defaultUserPhoto from '../../img/user.png'
 
 export const UserProfile = () => {
   const dispatch = useDispatch();
 
+  /**
+   * TODO
+   * change forms values using user info from state
+   */
   const [formValues, setFormValues] = useState({
-    name: '',
-    lastName: '',
-    userName: '',
-    email: '',
-    password: '',
-    passwordConfirm: '',
-    profileImage: {
-      name:'',
-      data:'',
-      extention:''
-    },
-    image: '',
+    name: "",
+    lastName: "",
+    userName: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    profileImage: null,
+    image: "",
   });
 
   const {
@@ -41,20 +42,21 @@ export const UserProfile = () => {
     email,
     password,
     passwordConfirm,
-    image,
-    UserImage
+    profileImage,
+    imageUrl
   } = formValues;
 
   useEffect(() => {
     getCurrentUser().then((response) => {
       setFormValues(response.data);
+      setFormValues((values)=>({...values, imageUrl: response.data.profileImage, profileImage: null}))
     });
   }, []);
 
   const saveChanges = (e) => {
     e.preventDefault();
 
-    dispatch(updateUser(name, lastName, userName, email, password, UserImage));
+    dispatch(updateUser(name, lastName, userName, email, password, profileImage, profileImage));
   };
 
   const HandleOnchange = ({ target }) => {
@@ -68,19 +70,19 @@ export const UserProfile = () => {
 
   const handleUploadImage = (imagenes) => {
     const uriImg = URL.createObjectURL(imagenes[0]);
-    getimageData(imagenes[0]).then(response =>{
-      setFormValues({ ...formValues, image: uriImg, UserImage: response });
-    }).catch(error =>{
-      console.log('error to get image data', error)
-      dispatch(openSnackBar(error, "error"))
-    })
-
+    getimageData(imagenes[0])
+      .then((response) => {
+        setFormValues({ ...formValues, imageUrl: uriImg, profileImage: response });
+      })
+      .catch((error) => {
+        dispatch(openSnackBar(error, "error"));
+      });
   };
 
   return (
     <Container component="main" maxWidth="md" justify="center">
       <div style={styleAuth.paper}>
-        <Avatar style={styleAuth.avatar} src={image || ""} />
+        <Avatar style={styleAuth.avatar} src={imageUrl || defaultUserPhoto} />
         <Typography component="h1" variant="h5">
           User profile
         </Typography>
