@@ -23,4 +23,5 @@ export const HttpClient = {
   post: (urlEndpoint, bodyData) => axios.post(urlEndpoint, bodyData),
   put: (urlEndpoint, bodyData) => axios.put(urlEndpoint, bodyData),
   delete: (urlEndpoint) => axios.delete(urlEndpoint),
+  all: (requests = [])=> axios.all(requests)
 };

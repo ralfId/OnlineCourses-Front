@@ -23,6 +23,8 @@ export const loginUser = (user) => {
       })
       .catch((error) => {
         //catch one error
+        console.log(error)
+
         if (error.response.data.message !== null) {
           dispatch(
             openSnackBar("Login error: " + error.response.data.message, "error")

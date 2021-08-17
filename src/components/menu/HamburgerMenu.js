@@ -40,7 +40,7 @@ export const HamburgerMenu = () => {
           <Divider />
 
           <List>
-              <ListItem button component={Link}  to="/newCourse">
+              <ListItem button component={Link}  to="/course">
                   <i className="material-icons">add_box</i>
                   <ListItemText classes={{primary: listItemText}} primary="New Course"/>
               </ListItem>

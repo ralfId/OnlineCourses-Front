@@ -6,23 +6,26 @@ import {
   Typography,
   Avatar,
 } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+
 import { useStyles } from "../../Styles/ui";
 import { HamburgerMenu } from "../menu/HamburgerMenu";
-import { useDispatch } from "react-redux";
 import { openDropdownMenu, openHamburgerMenu } from "../../actions/menu";
 import { DropdownMenu } from "./DropdownMenu";
+import defaultUserImage from "../../img/user.png";
 
 export const NavBar = () => {
   const dispatch = useDispatch();
+  const { userName, image } = useSelector((state) => state.auth);
   const { secctionDesktop, secctionMobile, grow, avatarSize } = useStyles();
 
   const handleOpenMenu = () => {
     dispatch(openHamburgerMenu());
   };
 
-  const handleDropdownMenuOpen =()=>{
-    dispatch(openDropdownMenu())
-  }
+  const handleDropdownMenuOpen = () => {
+    dispatch(openDropdownMenu());
+  };
   return (
     <>
       <HamburgerMenu />
@@ -38,9 +41,9 @@ export const NavBar = () => {
 
         <div className={secctionDesktop}>
           <Button color="inherit">Logout</Button>
-          <Button color="inherit">User Name</Button>
+          <Button color="inherit">{userName}</Button>
           <Avatar
-            src="https://cdn.pixabay.com/photo/2018/01/15/07/51/woman-3083383_960_720.jpg"
+            src={image || defaultUserImage}
             className={avatarSize}
           ></Avatar>
         </div>

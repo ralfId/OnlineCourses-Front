@@ -166,15 +166,6 @@ export const UserProfile = () => {
                 imgExtension={["jpg", "jpeg", "png"]}
                 maxFileSize={4000000}
               />
-              {/* <ImageUploader
-                withIcon={true}
-                key={userPhotoId}
-                singleImage={true}
-                buttonText="Choose your profile picture"
-                onChange={handleUploadImage}
-                imgExtension={["jpg", "jpeg", "png"]}
-                maxFileSize={4000000}
-              /> */}
             </Grid>
           </Grid>
           <Grid container justifyContent="center">
