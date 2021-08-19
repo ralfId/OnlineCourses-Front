@@ -3,6 +3,7 @@ export const types = {
   login: "[auth Login] Login",
   logout: "[auth Logout] Logout",
   update: "[auth Update] Update user",
+  finishChecking: "[auth checking] Finish checking",
 
   /* SNACKBAR REDUCER */
 
@@ -14,4 +15,8 @@ export const types = {
   closeHamburgerMenu: "[menu] Hamburguer menu closed",
   openDropdownMenu: "[menu] Dropdown menu open",
   closeDropdownMenu: "[menu] Dropdown menu closed",
+
+  /* COURSES REDUCER */
+
+  coursesPagination: "[courses] Get courses pagination"
 };

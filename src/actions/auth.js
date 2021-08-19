@@ -16,14 +16,13 @@ export const loginUser = (user) => {
               "data:image/" + photo.extention + ";base64," + photo.data;
             response.data.image = newPhoto;
             response.data.profileImage = null;
-
           }
           dispatch(login(response.data));
         }
       })
       .catch((error) => {
         //catch one error
-        console.log(error)
+        console.log(error);
 
         if (error.response.data.message !== null) {
           dispatch(
@@ -43,10 +42,35 @@ export const loginUser = (user) => {
   };
 };
 
+export const startChecking = () => {
+  return (dispatch) => {
+
+    HttpClient.get("/Users")
+      .then((resp) => {
+        console.log("response", resp);
+        if (resp.status === 200) {
+          if (resp.data.profileImage) {
+            let photo = resp.data.profileImage;
+            const newPhoto =
+              "data:image/" + photo.extention + ";base64," + photo.data;
+            resp.data.image = newPhoto;
+            resp.data.profileImage = null;
+          }
+
+          dispatch(login(resp.data));
+        }
+      })
+      .catch((e) => {
+        dispatch(checkingFinish());
+      });
+  };
+};
+
 const login = (user) => ({
   type: types.login,
   payload: user,
 });
+const checkingFinish = () => ({ type: types.finishChecking });
 
 export const registerUser = (name, lastname, username, email, password) => {
   return (dispatch) => {
@@ -99,21 +123,6 @@ export const getCurrentUser = () => {
       resolve(response);
     });
   });
-
-  // return (dispatch) => {
-  //   HttpClient.get("/Users").then((response) => {
-  //     if (response.status === 200) {
-  //       if (response.data.ProfileImage) {
-  //         let photo = response.data.ProfileImage;
-  //         const newPhoto =
-  //           "data:image/" + photo.extention + ";base64," + photo.data;
-  //         response.data.ProfileImage = newPhoto;
-  //         dispatch(login(response.data));
-  //         console.log(response.data)
-  //       }
-  //     }
-  //   });
-  // };
 };
 
 export const updateUser = (
