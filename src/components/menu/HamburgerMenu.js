@@ -44,9 +44,9 @@ export const HamburgerMenu = () => {
                   <i className="material-icons">add_box</i>
                   <ListItemText classes={{primary: listItemText}} primary="New Course"/>
               </ListItem>
-              <ListItem button component={Link} to="/exploreCourses">
+              <ListItem button component={Link} to="/courses">
                   <i className="material-icons">menu_book</i>
-                  <ListItemText classes={{ primary: listItemText}} primary="Explore Courses"/>
+                  <ListItemText classes={{ primary: listItemText}} primary="Courses"/>
               </ListItem>
           </List>
 

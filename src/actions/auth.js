@@ -47,7 +47,7 @@ export const startChecking = () => {
 
     HttpClient.get("/Users")
       .then((resp) => {
-        console.log("response", resp);
+        
         if (resp.status === 200) {
           if (resp.data.profileImage) {
             let photo = resp.data.profileImage;

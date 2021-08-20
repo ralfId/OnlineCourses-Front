@@ -1,4 +1,5 @@
 import { HttpClient } from "../services/httpClient";
+import { types } from "../types/types";
 import { openSnackBar } from "./ui";
 
 export const startSavingCourse = (course, image) => {
@@ -30,7 +31,6 @@ export const startSavingCourse = (course, image) => {
           }
         });
     } else {
-
       HttpClient.all([c])
         .then((resp) => {
           console.log(resp);
@@ -46,6 +46,30 @@ export const startSavingCourse = (course, image) => {
           }
         });
     }
-  
   };
 };
+
+export const startGetCoursePagination = (
+  title,
+  pageNumber,
+  cuantityElements
+) => {
+  return (dispath) => {
+    HttpClient.post("/Courses/CoursesReport", {
+      title,
+      pageNumber,
+      cuantityElements,
+    })
+      .then((resp) => {
+        dispath(coursesPagination(resp.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+};
+
+const coursesPagination = (pagination) => ({
+  type: types.coursesPagination,
+  payload: pagination,
+});
