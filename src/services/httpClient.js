@@ -1,6 +1,5 @@
 import axios from "axios";
-axios.defaults.baseURL =  "https://localhost:5001/api";
-// "https://localhost:5001/api" 
+axios.defaults.baseURL =  process.env.REACT_APP_API_URL;
 // "https://localhost:44364/api"
 
 axios.interceptors.request.use(
@@ -18,6 +17,8 @@ axios.interceptors.request.use(
     return new Promise.reject(error);
   }
 );
+
+console.log('process.env.REACT_APP_API_URL', process.env.REACT_APP_API_URL)
 
 export const HttpClient = {
   get: (urlEndpoint) => axios.get(urlEndpoint),
