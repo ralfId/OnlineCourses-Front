@@ -31,7 +31,6 @@ export const UserProfile = () => {
     profileImage: null,
     image: null,
   });
-  const { isAuthenticated } = auth;
 
   const {
     name,
@@ -45,12 +44,11 @@ export const UserProfile = () => {
   } = formValues;
 
   useEffect(() => {
-    // getCurrentUser().then((response) => {
-    // });
-    if (isAuthenticated) {
+
+    if (auth) {
       setFormValues(auth);
     }
-  }, [isAuthenticated, auth]);
+  }, [auth]);
 
   const saveChanges = (e) => {
     e.preventDefault();

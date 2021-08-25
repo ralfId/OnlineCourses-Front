@@ -14,7 +14,10 @@ export const courseReducer = (state = initState, action) => {
                 ...state,
                 ...action.payload
             }
-    
+    case types.coursesLogout:
+        return{
+            ...initState
+        }
         default:
             return state;
     }

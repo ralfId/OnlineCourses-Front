@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import { closeDropdownMenu } from "../../actions/menu";
 import { useStyles } from "../../Styles/ui";
 import defaultUserPhoto from "../../img/user.png";
+import { startCloseSession } from "../../actions/auth";
+import { ExitToApp } from "@material-ui/icons";
 
 
 export const DropdownMenu = () => {
@@ -24,7 +26,7 @@ export const DropdownMenu = () => {
     dispatch(closeDropdownMenu());
   };
 
-  const handleLogout = () => {};
+  const handleLogout = () => { dispatch(startCloseSession())};
   return (
     <Drawer
       open={isDropdownMenuOpen}
@@ -47,6 +49,7 @@ export const DropdownMenu = () => {
               classes={{ primary: listItemText }}
               primary="LOGOUT"
             />
+            <ExitToApp/>
           </ListItem>
         </List>
       </div>

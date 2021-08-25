@@ -15,3 +15,5 @@ export const openDropdownMenu = () => ({
 export const closeDropdownMenu = () => ({
   type: types.closeDropdownMenu,
 });
+
+export const menuLogout =()=>({type: types.menuLogout});

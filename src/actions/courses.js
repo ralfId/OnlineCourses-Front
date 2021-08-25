@@ -73,3 +73,7 @@ const coursesPagination = (pagination) => ({
   type: types.coursesPagination,
   payload: pagination,
 });
+
+export const coursesLogout = () => ({
+  type: types.coursesLogout,
+});

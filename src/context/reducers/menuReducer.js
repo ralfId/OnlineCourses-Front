@@ -28,6 +28,10 @@ export const menuReducer = (state = initState, action) => {
                 ...state,
                 isDropdownMenuOpen: false
             }
+            case types.menuLogout:
+                return{
+                    ...initState
+                }
         default:
             return state
     }

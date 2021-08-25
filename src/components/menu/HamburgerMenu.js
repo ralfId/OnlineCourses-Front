@@ -28,6 +28,10 @@ export const HamburgerMenu = () => {
       >
         <div classes={list} onClick={handleCloseMenu}>
           <List>
+            <ListItem button component={Link} to="/coursesindex">
+              <span className="material-icons">home</span>
+              <ListItemText classes={{primary: listItemText}} primary="Home"/>
+            </ListItem>
             <ListItem button component={Link} to="/profile">
               <i className="material-icons">account_box</i>
               <ListItemText
@@ -40,27 +44,39 @@ export const HamburgerMenu = () => {
           <Divider />
 
           <List>
-              <ListItem button component={Link}  to="/course">
-                  <i className="material-icons">add_box</i>
-                  <ListItemText classes={{primary: listItemText}} primary="New Course"/>
-              </ListItem>
-              <ListItem button component={Link} to="/courses">
-                  <i className="material-icons">menu_book</i>
-                  <ListItemText classes={{ primary: listItemText}} primary="Courses"/>
-              </ListItem>
+            <ListItem button component={Link} to="/create">
+              <i className="material-icons">add_box</i>
+              <ListItemText
+                classes={{ primary: listItemText }}
+                primary="New Course"
+              />
+            </ListItem>
+            <ListItem button component={Link} to="/courses">
+              <i className="material-icons">menu_book</i>
+              <ListItemText
+                classes={{ primary: listItemText }}
+                primary="Courses"
+              />
+            </ListItem>
           </List>
 
-          <Divider/>
+          <Divider />
 
           <List>
-              <ListItem button component={Link} to="/newInstructor">
-                  <i className="material-icons">person_add</i>
-                  <ListItemText classes={{primary: listItemText}} primary="New Instructor"/>
-              </ListItem>
-              <ListItem button component={Link} to="/listInstructors">
-                  <i className="material-icons">people</i>
-                  <ListItemText classes={{primary: listItemText}} primary="Instructors"/>
-              </ListItem>
+            <ListItem button component={Link} to="/newInstructor">
+              <i className="material-icons">person_add</i>
+              <ListItemText
+                classes={{ primary: listItemText }}
+                primary="New Instructor"
+              />
+            </ListItem>
+            <ListItem button component={Link} to="/listInstructors">
+              <i className="material-icons">people</i>
+              <ListItemText
+                classes={{ primary: listItemText }}
+                primary="Instructors"
+              />
+            </ListItem>
           </List>
         </div>
       </Drawer>

@@ -15,8 +15,10 @@ export const types = {
   closeHamburgerMenu: "[menu] Hamburguer menu closed",
   openDropdownMenu: "[menu] Dropdown menu open",
   closeDropdownMenu: "[menu] Dropdown menu closed",
+  menuLogout: '[menu] Menu logout',
 
   /* COURSES REDUCER */
 
-  coursesPagination: "[courses] Get courses pagination"
+  coursesPagination: "[courses] Get courses pagination",
+  coursesLogout: "[courses] Clean courses reducer"
 };

@@ -13,6 +13,8 @@ import { HamburgerMenu } from "../menu/HamburgerMenu";
 import { openDropdownMenu, openHamburgerMenu } from "../../actions/menu";
 import { DropdownMenu } from "./DropdownMenu";
 import defaultUserImage from "../../img/user.png";
+import { ExitToApp } from "@material-ui/icons";
+import { startCloseSession } from "../../actions/auth";
 
 export const NavBar = () => {
   const dispatch = useDispatch();
@@ -26,6 +28,11 @@ export const NavBar = () => {
   const handleDropdownMenuOpen = () => {
     dispatch(openDropdownMenu());
   };
+
+  const logout = () =>{
+    dispatch(startCloseSession())
+  }
+
   return (
     <>
       <HamburgerMenu />
@@ -40,12 +47,14 @@ export const NavBar = () => {
         </Typography>
 
         <div className={secctionDesktop}>
-          <Button color="inherit">Logout</Button>
           <Button color="inherit">{userName}</Button>
           <Avatar
             src={image || defaultUserImage}
             className={avatarSize}
           ></Avatar>
+          <Button color="inherit" onClick={logout}>
+            <ExitToApp />
+          </Button>
         </div>
 
         <div className={secctionMobile} onClick={handleDropdownMenuOpen}>

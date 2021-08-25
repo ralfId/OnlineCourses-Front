@@ -18,7 +18,6 @@ axios.interceptors.request.use(
   }
 );
 
-console.log('process.env.REACT_APP_API_URL', process.env.REACT_APP_API_URL)
 
 export const HttpClient = {
   get: (urlEndpoint) => axios.get(urlEndpoint),
