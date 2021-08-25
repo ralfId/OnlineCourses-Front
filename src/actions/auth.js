@@ -19,7 +19,13 @@ export const loginUser = (user) => {
             response.data.image = newPhoto;
             response.data.profileImage = null;
           }
-          dispatch(login(response.data));
+          HttpClient.get(`/Roles/${response.data.userName}`).then(resp=>{
+            if(resp.status === 200){
+            response.data["roles"] = resp.data[0]
+
+            dispatch(login(response.data));
+            }
+          })
         }
       })
       .catch((error) => {
@@ -56,7 +62,6 @@ export const startChecking = () => {
             resp.data.image = newPhoto;
             resp.data.profileImage = null;
           }
-
           dispatch(login(resp.data));
         }
       })
@@ -124,43 +129,6 @@ export const registerUser = (
         }
       }
     }
-
-    // httpClientNoToken
-    //   .postNOToken("/Users/register", {
-    //     name,
-    //     lastname,
-    //     username,
-    //     email,
-    //     password,
-    //   })
-    //   .then((response) => {
-    //     if (response.status === 200) {
-    //       HttpClient.post("/Roles/enrolluser", { username, rol }).then(
-    //         (resp) => {
-    //           if (resp.status === 200) {
-    //             console.log(resp)
-    //           }
-    //         }
-    //       );
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     //catch one error
-    //     if (error.response.data.message !== null) {
-    //       dispatch(
-    //         openSnackBar( error.response.data.message, "error")
-    //       );
-    //     }
-    //     //catch many error
-    //     let errors = error.response.data.errors;
-    //     if (errors !== null) {
-    //       for (let categ in errors) {
-    //         for (let err in errors[categ]) {
-    //           dispatch(openSnackBar(errors[categ][err], "error"));
-    //         }
-    //       }
-    //     }
-    //   });
   };
 };
 
