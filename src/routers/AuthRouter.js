@@ -5,6 +5,7 @@ import { UserProfile } from "../components/auth/UserProfile";
 import { Courses } from "../components/courses/Courses";
 import { CoursesIndex } from "../components/courses/CoursesIndex";
 import { CreateCourse } from "../components/courses/CreateCourse";
+import { StudentIndex } from "../components/courses/students/StudentIndex";
 import { AppNavbar } from "../components/menu/AppNavbar";
 
 export const AuthRouter = () => {
@@ -17,6 +18,8 @@ export const AuthRouter = () => {
           <Route exact path="/profile" component={UserProfile} />
           <Route exact path='/create' component={CreateCourse}/>
           <Route exact path="/courses" component={Courses}/>
+          <Route exact path="/explorecourses" component={StudentIndex}/>
+          {/* <Route exact path="/mycourses" component={}/> */}
 
           <Redirect to="/coursesindex" />
         </Switch>

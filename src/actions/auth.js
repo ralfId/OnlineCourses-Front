@@ -62,7 +62,13 @@ export const startChecking = () => {
             resp.data.image = newPhoto;
             resp.data.profileImage = null;
           }
-          dispatch(login(resp.data));
+          HttpClient.get(`/Roles/${resp.data.userName}`).then(response=>{
+            if(response.status === 200){
+              resp.data["roles"] = response.data[0]
+
+            dispatch(login(resp.data));
+            }
+          })
         }
       })
       .catch((e) => {

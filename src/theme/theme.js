@@ -9,4 +9,5 @@ export const theme = createTheme({
       contrastText: "#ecfad8"
     },
   },
+  spacing: 8
 });
