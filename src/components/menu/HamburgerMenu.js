@@ -15,7 +15,6 @@ import { useStyles } from "../../Styles/ui";
 export const HamburgerMenu = () => {
   const dispatch = useDispatch();
   const { isHamburgerMenuOpen } = useSelector((state) => state.menu);
-  const { roles } = useSelector((state) => state.auth);
   const { list, listItemText } = useStyles();
 
   const handleCloseMenu = () => {
@@ -48,12 +47,8 @@ export const HamburgerMenu = () => {
 
           <Divider />
 
-          {
-            (roles === "student")
-            &&
-            (
-              <>
-               <List>
+          
+          <List>
                 <ListItem button component={Link} to="/explorecourses">
                   <MenuBook/>
                   <ListItemText
@@ -61,7 +56,7 @@ export const HamburgerMenu = () => {
                     primary="Explore course" 
                   />
                 </ListItem>
-                <ListItem button component={Link} to="/explorecourses">
+                <ListItem button component={Link} to="/mycourses">
                   <Bookmark/>
                   <ListItemText
                     classes={{ primary: listItemText }}
@@ -70,13 +65,8 @@ export const HamburgerMenu = () => {
                 </ListItem>
               </List>
 
-              <Divider />
-              </>
-            )
-          }
 
-          {(roles === "rootinstructor" || roles === "instructor") && (
-            <>
+          
               <List>
                 <ListItem button component={Link} to="/create">
                   <i className="material-icons">add_box</i>
@@ -112,8 +102,6 @@ export const HamburgerMenu = () => {
               />
             </ListItem>
           </List>
-            </>
-          )}
 
           
         </div>
