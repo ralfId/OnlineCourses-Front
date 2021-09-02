@@ -11,16 +11,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import ImageUploader from "react-images-upload";
 
-import {  updateUser } from "../../actions/auth";
+import { updateUser } from "../../actions/auth";
 import { styleAuth } from "../../Styles/auth";
 import { getimageData } from "../../helpers/getImageData";
 import { openSnackBar } from "../../actions/ui";
 import defaultUserPhoto from "../../img/user.png";
+import {
+  CompareEquals,
+  StringEmpty,
+  ValidateEmail,
+} from "../../utils/validations";
 
 export const UserProfile = () => {
   const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
+  const [validations, setValidations] = useState({ errors: {} });
+
   const [formValues, setFormValues] = useState({
     name: "",
     lastName: "",
@@ -44,18 +51,41 @@ export const UserProfile = () => {
   } = formValues;
 
   useEffect(() => {
-
     if (auth) {
       setFormValues(auth);
     }
   }, [auth]);
 
+  const checkValidations = () => {
+    let errors = {};
+    let isValid = true;
+
+    try {
+      if (!ValidateEmail(email)) {
+        errors["email"] = "Email is not valid";
+        isValid = false;
+      }
+
+      if (!CompareEquals(password, passwordConfirm)) {
+        errors["password"] = "Passwords do not match";
+        isValid = false;
+      }
+
+      setValidations({ ...validations, errors });
+      return isValid;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const saveChanges = (e) => {
     e.preventDefault();
 
-    dispatch(
-      updateUser(name, lastName, userName, email, password, profileImage)
-    );
+    if (checkValidations()) {
+      dispatch(
+        updateUser(name, lastName, userName, email, password, profileImage)
+      );
+    }
   };
 
   const HandleOnchange = ({ target }) => {
@@ -90,6 +120,9 @@ export const UserProfile = () => {
           User profile
         </Typography>
         <form style={styleAuth.form} onSubmit={saveChanges}>
+          <span style={{ color: "red" }}>
+            {validations.errors["emptyFiles"]}
+          </span>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <TextField
@@ -100,6 +133,7 @@ export const UserProfile = () => {
                 fullWidth
                 label="Type your name"
               />
+              <span style={{ color: "red" }}>{validations.errors["name"]}</span>
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
@@ -128,9 +162,11 @@ export const UserProfile = () => {
                 onChange={HandleOnchange}
                 variant="outlined"
                 fullWidth
-                type="email"
                 label="Type your email"
               />
+              <span style={{ color: "red" }}>
+                {validations.errors["email"]}
+              </span>
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
@@ -142,6 +178,9 @@ export const UserProfile = () => {
                 type="password"
                 label="Type your password"
               />
+              <span style={{ color: "red" }}>
+                {validations.errors["password"]}
+              </span>
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField

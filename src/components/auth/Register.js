@@ -11,16 +11,18 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { useForms } from "../../hooks/useForms";
-
-import { styleAuth } from "../../Styles/auth";
-import { registerUser } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+
+import { useForms } from "../../hooks/useForms";
+import { styleAuth } from "../../Styles/auth";
+import { registerUser } from "../../actions/auth";
+import { CompareEquals, ValidateEmail } from "../../utils/validations";
 
 export const Register = () => {
   const dispatch = useDispatch();
 
+  const [validations, setValidations] = useState({ errors: {} });
   const [registerAs, setRegisterAs] = useState("student");
   const [formValues, handleOnchange] = useForms({
     name: "Rafael",
@@ -38,11 +40,30 @@ export const Register = () => {
   };
   const { name, lastname, username, email, pass, passconfirm } = formValues;
 
+  const checkValidations = () => {
+    let errors = {};
+    let isValid = true;
+
+    if (!ValidateEmail(email)) {
+      errors["email"] = "Email is not valid";
+      isValid = false;
+    }
+
+    if (!CompareEquals(pass, passconfirm)) {
+      errors["pass"] = "Passwords do not match";
+      isValid = false;
+    }
+
+
+    setValidations({ ...validations, errors });
+    return isValid;
+  };
   const register = (e) => {
     e.preventDefault();
 
-    dispatch(registerUser(name, lastname, username, email, pass, registerAs));
-
+    if (checkValidations()) {
+      dispatch(registerUser(name, lastname, username, email, pass, registerAs));
+    }
   };
 
   return (
@@ -59,11 +80,7 @@ export const Register = () => {
           </Typography>
 
           <FormControl component="fieldset" className="container-py">
-            <RadioGroup
-              row
-              value={registerAs}
-              onChange={handleChange}
-            >
+            <RadioGroup row value={registerAs} onChange={handleChange}>
               <FormControlLabel
                 name="student"
                 value="student"
@@ -79,7 +96,7 @@ export const Register = () => {
             </RadioGroup>
           </FormControl>
 
-          <form style={styleAuth.form}>
+          <form style={styleAuth.form} onSubmit={register}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -89,6 +106,7 @@ export const Register = () => {
                   variant="outlined"
                   fullWidth
                   label="Type your name"
+                  required
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -99,6 +117,7 @@ export const Register = () => {
                   variant="outlined"
                   fullWidth
                   label="Type your lastname"
+                  required
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -109,6 +128,7 @@ export const Register = () => {
                   variant="outlined"
                   fullWidth
                   label="Type your username"
+                  required
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -119,7 +139,10 @@ export const Register = () => {
                   variant="outlined"
                   fullWidth
                   label="Type your email"
+                  required
+                  type="email"
                 />
+                <span style={{"color":"red"}}>{validations.errors["email"]}</span>
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -130,7 +153,10 @@ export const Register = () => {
                   fullWidth
                   type="password"
                   label="Type your password"
+                  required
                 />
+                <span style={{"color":"red"}}>{validations.errors["pass"]}</span>
+
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -141,6 +167,7 @@ export const Register = () => {
                   fullWidth
                   type="password"
                   label="Confirm your password"
+                  required
                 />
               </Grid>
             </Grid>
@@ -154,7 +181,6 @@ export const Register = () => {
                   color="primary"
                   size="large"
                   style={styleAuth.submit}
-                  onClick={register}
                 >
                   Register
                 </Button>

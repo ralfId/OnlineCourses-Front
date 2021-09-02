@@ -63,7 +63,6 @@ export const CreateCourse = () => {
     }
 
     dispatch(startSavingCourse(newCourse, courseImg));
-    console.log(coursId);
   };
 
   return (
@@ -82,6 +81,7 @@ export const CreateCourse = () => {
                 variant="outlined"
                 fullWidth
                 label="Write a title"
+                required
               />
             </Grid>
             <Grid item xs={12} md={12}>
@@ -92,6 +92,7 @@ export const CreateCourse = () => {
                 variant="outlined"
                 fullWidth
                 label="Write a description "
+                required
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -103,6 +104,7 @@ export const CreateCourse = () => {
                 fullWidth
                 type="number"
                 label="Price"
+                required
               />
             </Grid>
 
@@ -124,10 +126,11 @@ export const CreateCourse = () => {
                   id="pubDate"
                   value={courseDate}
                   onChange={setCourseDate}
-                  label="Choose a  date"
+                  label="creation date"
                   format="dd/MM/yyyy"
                   fullWidth
                   KeyboardButtonProps={{ "area-label": "change date" }}
+                  disabled
                 />
               </MuiPickersUtilsProvider>
             </Grid>

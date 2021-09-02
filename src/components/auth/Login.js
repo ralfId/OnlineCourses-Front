@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -14,9 +14,11 @@ import { useForms } from "../../hooks/useForms";
 import { loginUser } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { ValidateEmail } from "../../utils/validations";
 
 export const Login = () => {
   const dispatch = useDispatch();
+  const [validations, setValidations] = useState({ errors: {} });
 
   const [formValues, handleOnChange] = useForms({
     email: "ralf_raid@yopmail.com",
@@ -25,15 +27,31 @@ export const Login = () => {
 
   const { email, password } = formValues;
 
+  const checkValidations = () => {
+
+    let errors = {};
+    let isValid = true;
+
+    if (!ValidateEmail(email)) {
+      errors["email"] = "Email is not valid";
+      isValid = false;
+    }
+
+    setValidations({...validations, errors})
+    return isValid;
+  };
   const userLogin = (e) => {
     e.preventDefault();
 
-    dispatch(loginUser(formValues));
+    const x = checkValidations();
+    if (x) {
+      dispatch(loginUser(formValues));
+    }
   };
 
   return (
     <Container maxWidth="xs" className="container-mt4">
-      <Paper elevation={3} className="container-px container-py" >
+      <Paper elevation={3} className="container-px container-py">
         <div style={styleAuth.paper}>
           <Avatar style={styleAuth.avatar}>
             <LockIcon style={styleAuth.icon} />
@@ -46,16 +64,19 @@ export const Login = () => {
               name="email"
               value={email}
               onChange={handleOnChange}
+              required
               variant="outlined"
               fullWidth
               type="email"
               label="Input email"
               margin="normal"
             />
+            <span style={{"color":"red"}}>{validations.errors["email"]}</span>
             <TextField
               name="password"
               value={password}
               onChange={handleOnChange}
+              required
               variant="outlined"
               fullWidth
               type="password"
